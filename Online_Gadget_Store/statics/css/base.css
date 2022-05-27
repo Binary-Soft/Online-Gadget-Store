@@ -1,0 +1,23 @@
+/* navbar start */
+.search_div{
+  margin-right: 34%
+}
+.login_button{
+ margin-right: 15px;
+}
+
+/* navbar end */
+
+
+/* login start */
+.container{
+ margin-top:5%;
+ 
+}
+.card_div{
+   margin-left: 35%;
+   align-items: center;
+   width: 100%;
+   height: 100%;
+}
+/* login end */
