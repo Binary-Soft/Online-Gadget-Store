@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}  Login {% endblock%}
+{% block title %}  Login {% endblock title %}
 
 {% block content %}
 <!-- Login starts   -->
@@ -12,19 +12,28 @@
             {% csrf_token %}
             <!-- Email input -->
             <div class="form-outline mb-3 mt-5">
-              <input type="email" name="user_email" id="form2Example1" class="form-control"  placeholder="Email" />
+              <input type="email" name="user_email" id="form2Example1" class="form-control"  placeholder="Email" required />
               <label class="form-label" for="form2Example1"></label>
             </div>
           
             <!-- Password input -->
             <div class="form-outline mb-4">
-              <input type="password" name="user_password" id="form2Example2" class="form-control" placeholder="Password" />
+              <input type="password" name="user_password" id="form2Example2" class="form-control" placeholder="Password"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+               required />
               <label class="form-label" for="form2Example2"></label>
             </div>
           
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
-            
+              
+              {% if messages %}
+                <ul class="messages">
+                  {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %} > {{ message }} </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
           
               <div class="col">
                 <!-- Simple link -->
@@ -46,4 +55,4 @@
     </div>
   </div>
 <!-- login ends    -->
-{% endblock %}
+{% endblock content %}
