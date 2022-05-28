@@ -1,3 +1,5 @@
+from email.policy import strict
+from queue import Empty
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import View
@@ -24,11 +26,16 @@ class UserLogin(View):
         user = authenticate(username=user_email, password=user_password)
 
         if user is not None:
+            redirect_to = self.request.POST.get("next")
             login(self.request, user)
-            return HttpResponseRedirect(reverse('home'))
+            
+            if redirect_to == "" :
+                return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(redirect_to)
+            
 
         messages.error(self.request, "Email or Password is Incorrect.")
-        return HttpResponseRedirect(reverse('user-login'))
+        return render(self.request, 'UserAuthentication/login.html')
 
 
 # for user logout
