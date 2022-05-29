@@ -2,9 +2,10 @@
 
 {% block title %}  Home {% endblock%}
 
+
 {% block content %}
 
-<h2>From  Home.html</h2>
+<h2> From  Home.html </h2>
 
     {% if request.user.is_authenticated %}
         <h1> Hello {{ request.user.first_name | title }}  </h1>

@@ -1,59 +1,67 @@
 {% extends 'base.html' %}
 
+
 {% block title %}  Login {% endblock title %}
 
+
+
 {% block content %}
-<!-- Login starts   -->
-      <div class="card_div">
-      <div class="container">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <form action="{% url 'user-login' %}" method="POST">
-            {% csrf_token %}
-            <!-- Email input -->
-            <div class="form-outline mb-3 mt-5">
-              <input type="email" name="user_email" id="form2Example1" class="form-control"  placeholder="Email" required />
-              <label class="form-label" for="form2Example1"></label>
-            </div>
-          
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-              <input type="password" name="user_password" id="form2Example2" class="form-control" placeholder="Password"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-               required />
-              <label class="form-label" for="form2Example2"></label>
-            </div>
-          
-            <!-- 2 column grid layout for inline styling -->
-            <div class="row mb-4">
-              
-              {% if messages %}
-                <ul class="messages">
-                  {% for message in messages %}
-                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %} > {{ message }} </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-          
-              <div class="col">
-                <!-- Simple link -->
-                <a href="#!">Forgot password?</a>
-              </div>
-            </div>
 
-           <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-          
-            <!-- Register buttons -->
-            <div class="text-center">
-              <p>Not a member? <a href="{% url 'user-registration' %}">Register</a></p>
 
-            </div>
-          </form>
+  <!-- Login starts   -->
+      
+  <div class="container d-flex justify-content-center pt-5">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_gjmecwii.json"  background="transparent"  speed="1"  style="width: 400px; height: 400px;"  loop  autoplay></lottie-player>
+  <div class="card" style="width: 25rem;">
+    <div class="card-body">
+      <form action="{% url 'user-login' %}" method="POST">
+        {% csrf_token %}
+        <!-- Email input -->
+        <div class="form-outline mb-3 mt-5">
+          <input type="email" name="user_email" id="form2Example1" class="form-control"  placeholder="Email" required />
+          <label class="form-label" for="form2Example1"></label>
         </div>
-      </div>
+      
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <input type="password" name="user_password" id="form2Example2" class="form-control" placeholder="Password"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+          required />
+          <label class="form-label" for="form2Example2"></label>
+        </div>
+      
+        <!-- 2 column grid layout for inline styling -->
+        <div class="row mb-4">
+          
+          {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %} > {{ message }} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+      
+          <div class="col">
+            <!-- Simple link -->
+            <a href="#!">Forgot password?</a>
+          </div>
+        </div>
+        
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+      
+        <!-- Register buttons -->
+        <div class="text-center">
+          <p>Not a member? <a href="{% url 'user-registration' %}">Register</a></p>
+
+        </div>
+      </form>
     </div>
   </div>
-<!-- login ends    -->
+  </div>
+  <!-- login ends    -->
+
 {% endblock content %}

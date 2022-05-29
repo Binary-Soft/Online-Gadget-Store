@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
+
 {% block title %} Registration  {% endblock title %}     
 
+
+
 {% block content %}
+
 <!-- registration starts   -->
-      <div class="card_div">
-      <div class="container">
-      <div class="card" style="width: 18rem;">
+      <!-- <div class="card_div"> -->
+      <div class="container d-flex justify-content-end pt-5">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_u8o7BL.json" mode="bounce" background="transparent"  speed=".5"  style="width: 700px; height: 550px;"  loop  autoplay></lottie-player>
+      <div class="card" style="width: 30rem;">
         <div class="card-body">
           <form action="{% url 'user-registration' %}" method="POST">
-           {% csrf_token %}
+            {% csrf_token %}
             <!-- Name input -->
             <div class="form-outline mb-3 mt-5">
               <input type="text" name="name" id="form2Example1" class="form-control"  placeholder="Name" required />
@@ -32,12 +38,11 @@
                 <input type="text" name="user_address" id="form2Example2" class="form-control" placeholder="Address" required />
             
               </div>
-
                <!-- Password input -->
             <div class="form-outline mb-4">
                 <input type="password" name="user_password" id="form2Example2" class="form-control" placeholder="Password" 
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                 required />
+                required />
             
               </div>
 
@@ -45,18 +50,18 @@
             <div class="form-outline mb-4">
                 <input type="password" name="confirm_password" id="form2Example2" class="form-control" placeholder="Confirm Password"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                 required />
+                required />
             
               </div>
-              
+
               {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
                 </ul>
-              {% endif %}  
-
+              {% endif %}
+     
           
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
@@ -76,6 +81,7 @@
         </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 <!-- registration ends    -->
+
 {% endblock content %}

@@ -10,3 +10,4 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         contex = super().get_context_data(**kwargs)
         return contex
+        

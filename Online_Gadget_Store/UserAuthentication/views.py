@@ -1,5 +1,3 @@
-from email.policy import strict
-from queue import Empty
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import View
@@ -86,4 +84,3 @@ class UserRegistration(View):
             return HttpResponseRedirect(reverse("user-profile"))
         
         return render(self.request, 'UserAuthentication/registration.html')
-

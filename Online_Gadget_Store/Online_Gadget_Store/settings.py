@@ -15,7 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = Path.joinpath(BASE_DIR, 'templates')
-STATIC_DIR = Path.joinpath(BASE_DIR, 'statics')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_DIR = Path.joinpath(BASE_DIR, 'statics')
 
 STATICFILES_DIRS = [
     STATIC_DIR,
