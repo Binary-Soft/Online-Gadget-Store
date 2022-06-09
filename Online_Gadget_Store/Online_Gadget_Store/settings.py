@@ -79,11 +79,30 @@ WSGI_APPLICATION = 'Online_Gadget_Store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+
+# for online server (requirements)
+# Django==3.2.4
+# djongo==1.3.6
+# pymongo==3.12.1
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'MyDatabase',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://admin:123@cluster0.ypkdud7.mongodb.net/?retryWrites=true&w=majority'
+            }
+        }
 }
 
 
@@ -127,6 +146,9 @@ STATIC_DIR = Path.joinpath(BASE_DIR, 'statics')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'medias'
 
 
 # Default primary key field type

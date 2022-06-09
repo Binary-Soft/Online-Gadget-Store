@@ -9,7 +9,7 @@ class ExtendUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=300)
     phone = models.CharField(max_length=16)
-    picture = models.ImageField(upload_to='images')
+    picture = models.ImageField(upload_to='userImages/', default="default.webp", blank=True)
 
     def __str__(self):
         return str(self.user)
