@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 
 from . models import ExtendUser
 # Create your views here.
@@ -87,7 +88,18 @@ class UserPasswordChange(UserProfile):
     template_name = 'UserAuthentication/changepassword.html'
 
     def post(self, *args, **kwargs):
-        pass
+        password = self.request.POST['password']
+        confirm_password = self.request.POST['confirm_password']
+        if password != confirm_password:
+            messages.warning(self.request, "Password Don't Match !")
+            return render(self.request, self.template_name)
+        else:
+            user = User.objects.get(username=self.request.user)
+            user.set_password(password)
+            user.save()
+            update_session_auth_hash(self.request, user)  # update the current session
+            messages.success(self.request, 'Your password was successfully updated!')
+            return HttpResponseRedirect(reverse('user-profile'))
 
 
 # for new user registration

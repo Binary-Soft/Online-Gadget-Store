@@ -1,4 +1,10 @@
 .error{
   color: red;
 }
-
+.warning{
+  color: red;
+}
+.success{
+  color: green;
+  text-align: center;
+}
