@@ -1,10 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect
+from django.http import HttpResponseNotFound
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from . models import ExtendUser
 # Create your views here.
@@ -36,6 +38,8 @@ class UserLogin(View):
         return render(self.request, 'UserAuthentication/login.html')
 
 
+
+
 # for user logout
 def UserLogout(request):
     logout(request);
@@ -45,9 +49,45 @@ def UserLogout(request):
 # for user profile
 class UserProfile(LoginRequiredMixin, View):
     login_url = "/user/login/"
+    template_name = 'UserAuthentication/profile.html'
 
     def get(self, *args, **kwargs):
-        return HttpResponse(str(self.request.user))
+        return render(self.request, self.template_name)
+    
+    def post(self, *args, **kwargs):
+        image = self.request.FILES.get('profileimage')
+        extenduser = ExtendUser.objects.get(user=self.request.user)
+        
+        if image is not None:
+            extenduser.picture = image
+            extenduser.save()
+        return render(self.request, self.template_name)
+
+
+# for update user information
+@login_required(login_url="/user/login/")
+def updateUserInfo(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phoneno = request.POST.get('phoneno')
+        address = request.POST.get('address')
+        extenduser = ExtendUser.objects.get(user=request.user)
+
+        extenduser.user.first_name=name
+        extenduser.user.save()
+        extenduser.phone = phoneno
+        extenduser.address = address
+        extenduser.save()
+        return HttpResponseRedirect(reverse('user-profile'))
+    else:
+        return HttpResponseNotFound(request)
+
+
+class UserPasswordChange(UserProfile):
+    template_name = 'UserAuthentication/changepassword.html'
+
+    def post(self, *args, **kwargs):
+        pass
 
 
 # for new user registration
