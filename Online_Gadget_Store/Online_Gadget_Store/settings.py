@@ -79,12 +79,12 @@ WSGI_APPLICATION = 'Online_Gadget_Store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 
@@ -94,16 +94,16 @@ WSGI_APPLICATION = 'Online_Gadget_Store.wsgi.application'
 # pymongo==3.12.1
 
 
-DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'MyDatabase',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb+srv://admin:123@cluster0.ypkdud7.mongodb.net/?retryWrites=true&w=majority'
-            }
-        }
-}
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'MyDatabase',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb+srv://admin:123@cluster0.ypkdud7.mongodb.net/?retryWrites=true&w=majority'
+#             }
+#         }
+# }
 
 
 # Password validation
@@ -155,3 +155,13 @@ MEDIA_ROOT = 'medias'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # for SMTP Sever   # EMAIL_HOST_PASSWORD is requird
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'sunnyvai110@gmail.com'
+EMAIL_HOST_PASSWORD = 'tkltktqwtqvmgsqf'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

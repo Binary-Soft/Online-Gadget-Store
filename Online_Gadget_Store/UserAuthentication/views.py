@@ -8,7 +8,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.views import ( PasswordResetView, PasswordResetConfirmView, 
+PasswordResetDoneView, PasswordResetCompleteView)
 
+from .forms import UserSetPasswordForm
 from . models import ExtendUser
 # Create your views here.
 
@@ -37,7 +40,6 @@ class UserLogin(View):
 
         messages.error(self.request, "Email or Password is Incorrect.")
         return render(self.request, 'UserAuthentication/login.html')
-
 
 
 
@@ -79,6 +81,7 @@ def updateUserInfo(request):
         extenduser.phone = phoneno
         extenduser.address = address
         extenduser.save()
+        messages.success(request, 'Your profile has been successfully updated!')
         return HttpResponseRedirect(reverse('user-profile'))
     else:
         return HttpResponseNotFound(request)
@@ -98,7 +101,7 @@ class UserPasswordChange(UserProfile):
             user.set_password(password)
             user.save()
             update_session_auth_hash(self.request, user)  # update the current session
-            messages.success(self.request, 'Your password was successfully updated!')
+            messages.success(self.request, 'Your password has been successfully updated!')
             return HttpResponseRedirect(reverse('user-profile'))
 
 
@@ -136,3 +139,20 @@ class UserRegistration(View):
             return HttpResponseRedirect(reverse("user-profile"))
         
         return render(self.request, 'UserAuthentication/registration.html')
+
+
+class UserPasswordReset(PasswordResetView):
+    template_name = 'UserAuthentication/userpasswordreset.html'
+
+
+class UserPasswordResetConfirm(PasswordResetConfirmView):
+    form_class = UserSetPasswordForm
+    template_name = 'UserAuthentication/passwordresetconfirm.html'
+    
+
+class UserPasswordResetDone(PasswordResetDoneView):
+    template_name = 'UserAuthentication/userPasswordResetDone.html'
+
+
+class UserPasswordResetComplete(PasswordResetCompleteView):
+    template_name = 'UserAuthentication/passwordResetcomplete.html'
