@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Online Gadget Store {% endblock %}
+
+{% block branding %}
+
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'images/sitelogo.jpg' %}" alt="sitelogo" width="50px">
+        Admin Area
+    </a>
+</h1>
+{% endblock branding %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'css/adminstyle.css' %}">
+{% endblock extrastyle %}
+
+{% block nav-global %} {% endblock nav-global %}
