@@ -1,0 +1,25 @@
+<div class="mt-5" style="background-color: #e8e2e1; height: 30rem">
+  <h4 class="text-center m-3 pt-4">Featured Category</h4>
+  <h5 class="text-center m-3">
+    Get Your Desired Product from Featured Category!
+  </h5>
+
+  <div class="container">
+    <div class="row">
+      {% for category in categories %}
+
+      <div class="col-md-2">
+        <div class="card" style="width: 10rem; height: 13rem">
+          <img src="{{ category.logo.url }}" class="card-img-top" alt="{{ category.logo }}" height="100px" />
+          <div class="card-body">
+            <a href="{% url 'category-name' category.slug %}" style="text-decoration: none">
+              <h5 class="card-title">{{ category.category_name|title }}</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor category %}
+    </div>
+  </div>
+</div>

@@ -131,7 +131,7 @@ class UserRegistration(View):
             messages.error(self.request, 'The Email you entered has already been used. Please try another Email.')
             return HttpResponseRedirect(reverse("user-registration"))
         
-        user = User.objects.create_user(username=user_email, password=confirm_password, email=username, first_name=name)
+        user = User.objects.create_user(username=user_email, password=confirm_password, email=user_address, first_name=name)
         if user is not None:
             extenduser = ExtendUser(user=user, address=user_address)
             extenduser.save()
@@ -156,3 +156,4 @@ class UserPasswordResetDone(PasswordResetDoneView):
 
 class UserPasswordResetComplete(PasswordResetCompleteView):
     template_name = 'UserAuthentication/passwordResetcomplete.html'
+    

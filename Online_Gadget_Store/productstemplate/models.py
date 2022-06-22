@@ -4,8 +4,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Category(models.Model):
-    category_name = models.CharField(max_length=20, default="", unique=True)
+    category_name = models.CharField(max_length=20, unique=True)
+    logo = models.ImageField(upload_to='Category')
+    slug = models.SlugField(unique="True", help_text="Slug is a field in autocomplete mode, but if you want you can modify its contents")
 
     def __str__(self):
         return self.category_name
@@ -31,7 +34,7 @@ class Product(models.Model):
     image3 = models.ImageField(upload_to='Product Images', blank=True)
 
     class Meta:
-        unique_together = ['category', 'brand_name']
+        unique_together = [['category', 'brand_name', 'product_name', 'specification'] ]
     
     def __str__(self):
         return self.product_name

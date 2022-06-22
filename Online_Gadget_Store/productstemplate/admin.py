@@ -4,8 +4,18 @@ from .models import (Category, Brand, Product, Order, WishList)
 
 # Register your models here.
 
-admin.site.register(Category)
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("category_name",)}
+
+
 admin.site.register(Brand)
-admin.site.register(Product)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['category', 'brand_name', 'product_name']
+    list_filter = ['category', 'brand_name', ]
+
 admin.site.register(Order)
 admin.site.register(WishList)

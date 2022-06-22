@@ -1,73 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}  Home {% endblock%}
+{% block title %} Home {% endblock%}
 
 
 {% block content %}
 
-<h2> From  Home.html </h2>
 
-    {% if request.user.is_authenticated %}
-        <h1> Hello {{ request.user.first_name | title }}  </h1>
-        {{ request.user }}
-    {% endif %}
-    <a href="{% url 'user-profile' %}"> Profile </a>
-
+{% if request.user.is_authenticated %}
+<h1> Hello {{ request.user.first_name | title }} </h1>
+{{ request.user }}
+{% endif %}
+<a href="{% url 'user-profile' %}"> Profile </a>
 
 
-    <div class="container pt-2">
-        <div
-          id="carouselExampleInterval"
-          class="carousel slide"
-          data-bs-ride="carousel"
-        >
-          <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-              <img
-                src="https://www.startech.com.bd/image/cache/catalog/home/banner/gadget-fest-coming-soon-982x500.jpg"
-                class="d-block w-100"
-                alt="..."
-                style="height: 350px"
-              />
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img
-                src="https://www.startech.com.bd/image/cache/catalog/home/banner/gaming-chair-fest-home-banner2-982x500.jpg"
-                class="d-block w-100"
-                alt="..."
-                style="height: 350px"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="https://www.startech.com.bd/image/cache/catalog/home/banner/64-free-delivery-5-brand-home-banner-982x500.jpg"
-                class="d-block w-100"
-                alt="..."
-                style="height: 350px"
-              />
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleInterval"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleInterval"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
+
+<div class="container pt-2">
+  <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="10000">
+        <img src="https://www.startech.com.bd/image/cache/catalog/home/banner/gadget-fest-coming-soon-982x500.jpg"
+          class="d-block w-100" alt="..." style="height: 350px" />
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img
+          src="https://www.startech.com.bd/image/cache/catalog/home/banner/gaming-chair-fest-home-banner2-982x500.jpg"
+          class="d-block w-100" alt="..." style="height: 350px" />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="https://www.startech.com.bd/image/cache/catalog/home/banner/64-free-delivery-5-brand-home-banner-982x500.jpg"
+          class="d-block w-100" alt="..." style="height: 350px" />
+      </div>
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
 
+
+
+{% include 'productstemplate\categorys.html' %}
 
 
 
