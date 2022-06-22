@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="icon" type="image/x-icon" href="{{ category.logo.url }}">
+{% endblock header %}
+
+{% block title %} {{ category.category_name|title }} {% endblock%}
+
+
+{% block content %}
+
+
+{% include 'productstemplate\productlist.html' with products=specificallproducts %}
+
+{% endblock %}

@@ -17,7 +17,7 @@ class HomeView(TemplateView):
 
 
 class SpecificCategoryAllProducts(TemplateView):
-    template_name = "productstemplate/products.html"
+    template_name = "productstemplate/specificeproducts.html"
 
     def get_context_data(self, **kwargs):
         contex = super().get_context_data(**kwargs)
