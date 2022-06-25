@@ -1,41 +1,31 @@
-<div class="container">
-    <section>
-        <div class="text-center container py-5">
-            <h4 class="mt-4 mb-5"><strong>Browse Products</strong></h4>
-            <div class="row">
-                {% for product in products %}
-                <div class="col-lg-4 col-md-12 mb-4">
-                    <div class="card">
-                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
-                            data-mdb-ripple-color="light">
-                            <img src="{{ product.image1.url }}"
-                                class="w-100" />
-                            <a href="#!">
-                                <div class="mask">
-                                    <div class="d-flex justify-content-start align-items-end h-100"></div>
-                                </div>
-                                <div class="hover-overlay">
-                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <a href="" class="text-reset">
-                                <h5 class="card-title mb-3">{{ product.product_name|title }}</h5>
-                            </a>
-                            <a>
-                                Brand : {{ product.brand_name }}
-                            </a>
-                            <table>
-                                {{ product.specification }}
-                            </table>
-                            <h6 class="mb-3">Tk {{ product.price }}</h6>
-                        </div>
-                    </div>
-                </div>
-                {% endfor product %}
-            </div>
-        </div>
-    </section>
-</div>
 
+  <div class="container mt-5">
+    <div class="container d-flex">
+      <div class="row justify-content-center">
+        {% for product in products %}
+        
+        <div class="col-3 mb-3 me-5">
+          <div class="card" style="width: 18rem">
+            <a href="{% url 'product-detail' product.pk %}">
+            <img
+              src="{{ product.image1.url }}"
+              class="card-img-top  animate__animated animate__pulse"
+              alt="{{ product.image1 }}"
+              width="100px" height="250px"
+            />
+            </a>
+            <div class="card-body">
+              <h5 class="card-text text-center animate__animated animate__headShake">
+                <a href="{% url 'product-detail' product.pk %}">
+                    {{ product.product_name|title }}
+                </a>
+            </h5>
+              <p class="card-text text-center">Tk {{ product.price }}</p>
+              <i class="fas fa-cart-arrow-down animate__animated animate__flip"></i>
+            </div>
+          </div>
+        </div>
+        {% endfor product %}
+      </div>
+    </div>
+  </div>

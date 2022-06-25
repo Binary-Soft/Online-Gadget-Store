@@ -22,7 +22,7 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
-    product_name = models.CharField(max_length=30, blank=False)
+    product_name = models.CharField(max_length=50, blank=False, help_text='Add Product Model Name or Product Name.')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, related_name="Products")
     brand_name = models.ForeignKey(Brand, on_delete=models.CASCADE, default="", blank=True, related_name="Products")
     specification = models.CharField(max_length=400, blank=True, default="")
@@ -32,6 +32,7 @@ class Product(models.Model):
     image1 = models.ImageField(upload_to='Product Images')
     image2 = models.ImageField(upload_to='Product Images', blank=True)
     image3 = models.ImageField(upload_to='Product Images', blank=True)
+    image4 = models.ImageField(upload_to='Product Images', blank=True)
 
     class Meta:
         unique_together = [['category', 'brand_name', 'product_name', 'specification'] ]
@@ -46,6 +47,7 @@ class Order(models.Model):
     shipping_address = models.CharField(max_length=100)
     quantity = models.PositiveBigIntegerField(default=0)
     total_price = models.FloatField(default=0.0)
+    datatime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user + " | " + self.product
@@ -56,6 +58,7 @@ class WishList(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="products")
     quantity = models.PositiveBigIntegerField(default=0)
     total_price = models.FloatField(default=0.0)
+    datatime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.user) + "  |  " + str(self.product)
