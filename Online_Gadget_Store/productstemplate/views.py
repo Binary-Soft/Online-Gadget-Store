@@ -26,27 +26,19 @@ class HomeView(TemplateView):
 
 class SpecificCategoryAllProducts(ListView):
     template_name = "productstemplate/specificeproducts.html"
-    model = Product
     paginate_by = 20
     paginate_orphans = 1
-    ordering = '-datatime'
     
-    def get_context_data(self, **kwargs):
-        contex = super().get_context_data(**kwargs)
+    context_object_name = 'products'
+
+    def get_queryset(self, *args, **kwargs):
         category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         products = Product.objects.filter(category=category).all().order_by('-datatime')
-        
-        paginator = Paginator(products, self.paginate_by)
-        page = self.request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-
-        contex['category'] = category
-        contex['specificallproducts'] = products
+        return products
+    
+    def get_context_data(self, *args, **kwargs):
+        contex = super().get_context_data(**kwargs)
+        contex['category'] = get_object_or_404(Category, slug=self.kwargs.get('slug'))  
         return contex
 
 
