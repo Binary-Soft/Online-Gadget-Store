@@ -81,7 +81,7 @@
         <div class="d-flex align-items-center">
           <!-- Icon -->
           <a class="text-reset me-3" href="#">
-            <i class="fas fa-shopping-cart"></i>
+            <a href="{% url 'add-to-cart' %}" ><i class="fas fa-shopping-cart"></i> </a>
           </a>
 
           {% if request.user.is_authenticated %}
