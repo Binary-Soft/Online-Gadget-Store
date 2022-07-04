@@ -9,11 +9,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from . models import Category, Product, WishList
+from . models import Category, Product, WishList, Order
 
 # Create your views here.
 
-
+# for home page
 class HomeView(TemplateView):
     template_name = "productstemplate/home.html"
 
@@ -24,6 +24,7 @@ class HomeView(TemplateView):
         return contex
 
 
+# Category Products
 class SpecificCategoryAllProducts(ListView):
     template_name = "productstemplate/specificeproducts.html"
     paginate_by = 20
@@ -42,11 +43,13 @@ class SpecificCategoryAllProducts(ListView):
         return contex
 
 
+# for single product details
 class ProductDetailView(DetailView):
     template_name = "productstemplate/singleproduct.html"
     model = Product
 
 
+# for product add to cart
 class AddToCart(LoginRequiredMixin, View):
     login_url = "/user/login/"
     template_name = "productstemplate/addcart.html"
@@ -83,6 +86,7 @@ bdskynet75@gmail.com
 Tintinbd12
 '''
 
+# delete user wishlist
 class DeleteWishList(LoginRequiredMixin, View):
     login_url = "/user/login/"
 
@@ -92,3 +96,18 @@ class DeleteWishList(LoginRequiredMixin, View):
         wishlist = WishList.objects.get(user=user, pk=id)
         wishlist.delete()
         return HttpResponseRedirect(reverse('add-to-cart'))
+
+
+# user all orders
+class UserOrderView(LoginRequiredMixin, ListView):
+    login_url = "/user/login"
+    template_name = 'productstemplate/orders.html'
+    paginate_by = 20
+    paginate_orphans = 5
+    context_object_name = 'orders'
+
+    def get_queryset(self, *args, **kwargs):
+        user = User.objects.get(email=self.request.user)
+        allOrders = Order.objects.filter(user=user).all().order_by('-datatime')
+        return allOrders
+
