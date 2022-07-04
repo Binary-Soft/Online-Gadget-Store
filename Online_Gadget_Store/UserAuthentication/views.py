@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponseNotFound
 from django.urls import reverse
 from django.views import View
+from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -50,9 +51,15 @@ def UserLogout(request):
 
 
 # for user profile
-class UserProfile(LoginRequiredMixin, View):
+class UserProfileView(LoginRequiredMixin, TemplateView):
     login_url = "/user/login/"
     template_name = 'UserAuthentication/profile.html'
+
+
+# for update user profile
+class UpdateUserProfile(LoginRequiredMixin, View):
+    login_url = "/user/login/"
+    template_name = 'UserAuthentication/updateprofile.html'
 
     def get(self, *args, **kwargs):
         return render(self.request, self.template_name)
@@ -82,12 +89,12 @@ def updateUserInfo(request):
         extenduser.address = address
         extenduser.save()
         messages.success(request, 'Your profile has been successfully updated!')
-        return HttpResponseRedirect(reverse('user-profile'))
+        return HttpResponseRedirect(reverse('update-user-profile'))
     else:
         return HttpResponseNotFound(request)
 
 
-class UserPasswordChange(UserProfile):
+class UserPasswordChange(UpdateUserProfile):
     template_name = 'UserAuthentication/changepassword.html'
 
     def post(self, *args, **kwargs):
@@ -102,7 +109,7 @@ class UserPasswordChange(UserProfile):
             user.save()
             update_session_auth_hash(self.request, user)  # update the current session
             messages.success(self.request, 'Your password has been successfully updated!')
-            return HttpResponseRedirect(reverse('user-profile'))
+            return HttpResponseRedirect(reverse('update-user-profile'))
 
 
 # for new user registration

@@ -30,8 +30,15 @@
 
                         <!-- <button type="button" class="btn btn-outline-primary ms-1 mb-2">Order History</button><br> -->
 
+                        <form method="POST" action="{% url 'user-profile' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label>Upload Profile Pic</label>
                             <div class="d-flex justify-content-center mb-2">
+                                <input type="file" accept="image/*" name="profileimage" class="btn btn-primary"
+                                    required>
+                                <button class="btn btn-primary btn-sm" type="submit">Change</button>
                             </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -41,14 +48,17 @@
             <div class="col-lg-8">
                 <div class="card mb-4" style="background-color: #e3f2fd">
                     <div class="card-body">
-                        
+                        <form method="POST" action="{% url 'user-profile-update' %}">
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="col-sm-3">
                                     <p class="mb-0">Full Name</p>
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        {{ request.user.first_name|title }} </p>
+                                        <input type="text" id="fullname" name="name" required
+                                            value="{{ request.user.first_name|title }}">
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -67,7 +77,9 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        {{request.user.extenduser.phone}} </p>
+                                        <input type="number" id="phone" name="phoneno"  required
+                                            value="{{ request.user.extenduser.phone }}" maxlength="14">
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -77,9 +89,13 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        {{ request.user.extenduser.address|title }} </p>
+                                        <textarea rows="8" cols="23" name="address"  required
+                                            id="address">{{ request.user.extenduser.address }}</textarea>
+                                    </p>
                                 </div>
                             </div>
+                            <button class="btn btn-primary btn-sm" type="submit">Changes Save</button>
+                        </form>
                     </div>
                 </div>
 
@@ -169,7 +185,6 @@
 </section>
 
 <a href="{% url 'user-password-change' %}" > Change Password </a> <br>
-<a href="{% url 'update-user-profile' %}" > Update Profile </a> <br>
 
 
 
