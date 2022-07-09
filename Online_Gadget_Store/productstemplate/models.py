@@ -42,7 +42,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product")
     shipping_address = models.CharField(max_length=100)
     quantity = models.PositiveBigIntegerField(default=0)
@@ -50,7 +50,7 @@ class Order(models.Model):
     datatime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user + " | " + self.product
+        return str(self.user) + " | " + str(self.product)
 
 
 class WishList(models.Model):

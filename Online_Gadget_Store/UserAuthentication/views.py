@@ -14,6 +14,10 @@ PasswordResetDoneView, PasswordResetCompleteView)
 
 from .forms import UserSetPasswordForm
 from . models import ExtendUser
+
+from productstemplate.models import Order
+
+
 # Create your views here.
 
 
@@ -55,6 +59,12 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     login_url = "/user/login/"
     template_name = 'UserAuthentication/profile.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(email=self.request.user)
+        context['orders'] = user.orders.all().order_by('-datatime')[:2]
+        return context
+
 
 # for update user profile
 class UpdateUserProfile(LoginRequiredMixin, View):
@@ -83,8 +93,9 @@ def updateUserInfo(request):
         address = request.POST.get('address')
         extenduser = ExtendUser.objects.get(user=request.user)
 
-        extenduser.user.first_name=name
-        extenduser.user.save()
+        if name != '' or name != None:
+            extenduser.user.first_name=name
+            extenduser.user.save()
         extenduser.phone = phoneno
         extenduser.address = address
         extenduser.save()
