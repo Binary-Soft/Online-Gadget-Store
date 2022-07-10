@@ -51,7 +51,7 @@ class ProductDetailView(DetailView):
 # for product add to cart
 class AddToCart(LoginRequiredMixin, View):
     login_url = "/user/login/"
-    template_name = "productstemplate/addcart.html"
+    template_name = "productstemplate/addcartlist.html"
 
     def post(self, *args, **kwargs):
         id = self.request.POST['productID']

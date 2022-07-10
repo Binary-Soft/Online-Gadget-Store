@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'UserAuthentication',
     'productstemplate',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,8 @@ EMAIL_HOST_USER = 'sunnyvai110@gmail.com'
 EMAIL_HOST_PASSWORD = 'tkltktqwtqvmgsqf'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+#  from Stripe account 
+STRIPE_SECRET_KEY = 'sk_test_51L0sl6E7kjWeybN5vvi99UYgfnrtDw9kUtsetqiFChkKL037bpzUCX7bfreXE97n1FCI51QCXNzXQV6QE6DX76gQ00VX4kNELY'
+STRIPE_PUBLISH_KEY = 'pk_test_51L0sl6E7kjWeybN5sAWCpKCLDmTYB0Izyfdp9Y61EyXOFDNzx8xYkAeXdU06vx3XeoqwB7CF5GazzyyPG4i5miZ000fR7WEXLV'
