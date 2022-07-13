@@ -157,10 +157,10 @@ MEDIA_ROOT = 'medias'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # for SMTP Sever   # EMAIL_HOST_PASSWORD is requird
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # for SMTP Sever   # EMAIL_HOST_PASSWORD is requird
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'sunnyvai110@gmail.com'
 EMAIL_HOST_PASSWORD = 'tkltktqwtqvmgsqf'
@@ -171,3 +171,5 @@ EMAIL_USE_TLS = True
 #  from Stripe account 
 STRIPE_SECRET_KEY = 'sk_test_51L0sl6E7kjWeybN5vvi99UYgfnrtDw9kUtsetqiFChkKL037bpzUCX7bfreXE97n1FCI51QCXNzXQV6QE6DX76gQ00VX4kNELY'
 STRIPE_PUBLISH_KEY = 'pk_test_51L0sl6E7kjWeybN5sAWCpKCLDmTYB0Izyfdp9Y61EyXOFDNzx8xYkAeXdU06vx3XeoqwB7CF5GazzyyPG4i5miZ000fR7WEXLV'
+
+WEB_HOOK_SECRETE_KEY ='whsec_1889e3f2b5edc5a90e7ae76233c5564dd4cad33fef9a64e546d134d5cedf31ff'

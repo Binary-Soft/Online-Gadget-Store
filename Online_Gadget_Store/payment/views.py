@@ -4,22 +4,43 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.conf import settings
 
 from productstemplate.models import WishList, Order, Product
 
 import stripe
+import json
 
 # Create your views here.
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
 class CreateCheckoutSession(View):
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.user)
-        products = WishList.objects.filter(user=user).order_by('-datatime')[0]
+        products = WishList.objects.filter(user=user).order_by('-datatime')
+        line_items = []
+        metadata = {}
+        for product in products:
+            line_items.append(
+                {
+                    'price_data': {
+                        'currency':'BDT',
+                        'product_data':{
+                            'name': product.product,
+                           # 'images':[product.product.image1,]
+                        },
+                        'unit_amount_decimal': ((product.total_price/product.quantity)*100.0),
+                    },
+                    'quantity': product.quantity
+                }
+            )
+            metadata['wish_product_id_'+ str(product.id)] = str(product.id)
+            metadata['product_id_'+ str(product.product.id)] = str(product.product.id,)
+            metadata['specification_'+ str(product.product.id)] = product.product.specification
 
         MY_DOMAIN = 'http://127.0.0.1:8000/user/payments'
         checkout_session = stripe.checkout.Session.create(
@@ -74,27 +95,11 @@ class CreateCheckoutSession(View):
                     }
                 },
             ],
-            line_items = [
-                {
-                    'price_data': {
-                        'currency':'BDT',
-                        'product_data':{
-                            'name': products.product,
-                           # 'images':[products.product.image1,]
-                        },
-                        'unit_amount_decimal': ((products.total_price/products.quantity)*100.0),
-                    },
-                    'quantity': products.quantity
-                }
-            ],
+            line_items = line_items,
             phone_number_collection={
                 'enabled': True,
             },
-            metadata={
-                'wish_product_id': products.id,
-                'product_id':products.product.id,
-                'specification':products.product.specification
-            },
+            metadata=metadata,
             mode = 'payment',
             success_url = MY_DOMAIN + '/success/',
             cancel_url = MY_DOMAIN + '/cancel/',
@@ -111,33 +116,99 @@ class CancleView(TemplateView):
     template_name = 'payment/cancle.html'
 
 
-import json
+
+endpoint_secret = settings.WEB_HOOK_SECRETE_KEY
+
 
 @csrf_exempt
 def my_webhook_view(request):
-  payload = request.body
-  event = None
+    payload = request.body
+    event = None
 
-  try:
-    event = stripe.Event.construct_from(
-      json.loads(payload), stripe.api_key
-    )
-  except ValueError as e:
-    # Invalid payload
-    return HttpResponse(status=400)
+    try:
+        event = stripe.Event.construct_from(
+        json.loads(payload), endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
 
-  # Handle the event
-  if event.type == 'payment_intent.succeeded':
-    payment_intent = event.data.object # contains a stripe.PaymentIntent
-    print('PaymentIntent was successful!')
-  elif event.type == 'payment_method.attached':
-    payment_method = event.data.object # contains a stripe.PaymentMethod
-    print('PaymentMethod was attached to a Customer!')
-  # ... handle other event types
-  else:
-    print('Unhandled event type {}'.format(event.type))
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.create(
+        amount=1099*100,
+        currency='BDT',
+        payment_method_types=['card'],
+        receipt_email='abc@gmail.com',
+        )
+        payment_intent = event.data.object # contains a stripe.PaymentIntent
+        # print(payment_intent)
 
-  return HttpResponse(status=200)
+        # print('Ok - PaymentIntent was successful!. User', request.user)
+        # wishlist = WishList.objects.filter(user=request.user)
+        '''
+        print('\n\n')
+        details = payment_intent['charges']['data'][0]['billing_details']
+        print(details)
+        address = details['address']
+        shping_address = f"{address['country']}, {address['city']}, {address['line1']}, {address['postal_code']}"
+        print("shping_address: " + shping_address)
+        email = details['email']
+        name = details['name']
+        phone = details['phone']
+        print("email: " + email)
+        print("name: " + name)
+        print("phone: " + str(phone))
+        print('total Am: ', payment_intent['amount_received']/100)
+        # for product in wishlist:
+            # Order.objects.create(user=request.user, product=product.product,
+            # shipping_address=shping_address, quantity=product.quantity, total_price=payment_intent['amount_total'],
+            # )
+        '''
+        
+
+    elif event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # print(session)
+        # print('\n\n\n')
+
+        shipping = session['customer_details']
+        address = shipping['address']
+        shping_address = f"{address['country']}, {address['city']}, {address['line1']}, {address['line2']}, Postal Code: {address['postal_code']}"
+        print(shping_address)
+
+        # customer_details
+        name = shipping['name']
+        email = shipping['email']
+        phone = shipping['phone']
+        print(name, email, phone)
+
+
+        # metadata = session['metadata']  # wishList product id
+
+        # price
+        subt = session['amount_subtotal']/100
+        total_price = session['amount_total']/100
+
+
+        print('subt: ', subt)
+        print('total: ', total_price)
+
+        
+        user = User.objects.get(email=email)
+        wishlist = WishList.objects.filter(user=user)
+        for product in wishlist:
+            userOrder = Order.objects.create(user=user, product=product.product,
+            quantity=product.quantity, total_price=total_price,
+            shipping_address=shping_address)
+        wishlist.delete()
+
+        send_mail('Your Online_Gadget_Store receipt', f'Payment Successfull.\nTotal = {total_price}\n', settings.EMAIL_HOST_USER, [email])
+        print("ok - pay succ")
+        # Passed signature verification
+    return HttpResponse(status=200)
 
 
 

@@ -1,0 +1,24 @@
+https://stripe.com/docs/checkout/quickstart
+        from this link 
+
+Payment succeeds  4242 4242 4242 4242
+Payment requires authentication 4000 0025 0000 3155
+Payment is declined 4000 0000 0000 9995
+
+10/51   123   or other
+
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+download stripe cli from here https://github.com/stripe/stripe-cli/releases/tag/v1.8.11
+
+Enter this command in stripe cli
+
+=> stripe status
+=> stripe login
+
+
+=> stripe listen --forward-to http://127.0.0.1:8000/user/payments/webhook/
+
+
