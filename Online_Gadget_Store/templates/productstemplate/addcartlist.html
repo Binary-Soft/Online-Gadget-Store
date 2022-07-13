@@ -93,22 +93,23 @@
                 </div>
 
 
-                <div class="card mb-4">
+                <!-- <div class="card mb-4">
                     <div class="card-body">
                         <p><strong>Expected shipping delivery</strong></p>
                         <p class="mb-0">12.10.2020 - 14.10.2020</p>
                     </div>
-                </div>
-                <div class="card mb-4 mb-lg-0">
-                    <div class="card-body">
-                        <p><strong>We accept</strong></p>
-                        <img class="me-2" width="45px"
+                </div> -->
+
+                <div class="col-md-4">
+                    <p><strong>We accept</strong></p>
+                    <div class="d-flex justify-content-center">
+                        <img class="col-md-4" width="45px"
                             src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                            alt="Visa" />
-                        <img class="me-2" width="45px"
+                            alt="Visa"/>
+                        <img class="col-md-4" width="45px"
                             src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
                             alt="American Express" />
-                        <img class="me-2" width="45px"
+                        <img class="col-md-4" width="45px"
                             src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
                             alt="Mastercard" />
                     </div>
@@ -135,18 +136,20 @@
                                 <div>
                                     <strong>Total amount</strong>
                                     <strong>
-                                        <p class="mb-0">(including VAT)</p>
+                                        <p class="mb-0">(Without Shipping Cost)</p>
                                     </strong>
                                 </div>
-                                <span><strong>Tk abc ------ </strong></span>
+                                <span><strong>Tk {{totalprice}} </strong></span>
                             </li>
                         </ul>
+                        {% if  wishlist.count != 0 %}
                         <form action="{% url 'create-checkout' %}" method="POST">
                             {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-lg btn-block">
                             Go to checkout
                         </button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

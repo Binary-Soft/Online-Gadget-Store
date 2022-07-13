@@ -146,8 +146,6 @@ def my_webhook_view(request):
         payment_intent = event.data.object # contains a stripe.PaymentIntent
         # print(payment_intent)
 
-        # print('Ok - PaymentIntent was successful!. User', request.user)
-        # wishlist = WishList.objects.filter(user=request.user)
         '''
         print('\n\n')
         details = payment_intent['charges']['data'][0]['billing_details']
@@ -193,16 +191,18 @@ def my_webhook_view(request):
         total_price = session['amount_total']/100
 
 
-        print('subt: ', subt)
-        print('total: ', total_price)
+        # print('subt: ', subt)
+        # print('total: ', total_price)
 
         
         user = User.objects.get(email=email)
         wishlist = WishList.objects.filter(user=user)
         for product in wishlist:
             userOrder = Order.objects.create(user=user, product=product.product,
-            quantity=product.quantity, total_price=total_price,
-            shipping_address=shping_address)
+            quantity=product.quantity, sub_total_price=product.total_price, total_price=total_price,
+            shipping_address=shping_address, phone=phone)
+        userOrder.is_last = True
+        userOrder.save()
         wishlist.delete()
 
         send_mail('Your Online_Gadget_Store receipt', f'Payment Successfull.\nTotal = {total_price}\n', settings.EMAIL_HOST_USER, [email])

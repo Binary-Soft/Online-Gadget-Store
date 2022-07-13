@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+
 from . models import Category, Product, WishList, Order
 
 # Create your views here.
@@ -67,14 +68,16 @@ class AddToCart(LoginRequiredMixin, View):
         wishlist.save()
         return HttpResponseRedirect(reverse('add-to-cart'))
 
+    
 
     def get(self, *args, **kwargs):
+        
         user = User.objects.get(email=self.request.user)
         wishlist = WishList.objects.filter(user=user).order_by('-datatime')
         total_price = 0
         for product in wishlist:
             total_price += product.total_price
-        userwishlist = {'wishlist': wishlist, 'totalprice': total_price}
+        userwishlist = {'wishlist': wishlist, 'totalprice': total_price,}
         return render(self.request, self.template_name, userwishlist)
 
 
@@ -125,7 +128,7 @@ class UserOrderView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         user = User.objects.get(email=self.request.user)
-        allOrders = Order.objects.filter(user=user).order_by('-datatime')
+        allOrders = Order.objects.filter(user=user).order_by('datatime')
         return allOrders
 
 
