@@ -79,15 +79,40 @@ class AddToCart(LoginRequiredMixin, View):
 
 
 # delete user wishlist
-class DeleteWishList(LoginRequiredMixin, View):
+class AddOrDeleteWishList(LoginRequiredMixin, View):
     login_url = "/user/login/"
 
+    # remove a specific product from user wishlist
     def get(self, *args, **kwargs):
         id = kwargs['pk']
         user = User.objects.get(email=self.request.user)
         wishlist = WishList.objects.get(user=user, pk=id)
         wishlist.delete()
         return HttpResponseRedirect(reverse('add-to-cart'))
+    
+    # add or remove a single product from user wishlist
+    def post(self, *args, **kwargs):
+        id = kwargs['pk']
+        quantity = int(self.request.POST['quantity'])
+        user = User.objects.get(email=self.request.user)
+        wishlistProduct = get_object_or_404(WishList, user=user, pk=id)
+        product = wishlistProduct.product
+
+        if quantity != 0:
+            if wishlistProduct.quantity < quantity:
+                wishlistProduct.quantity += 1
+            else:
+                wishlistProduct.quantity -= 1
+            wishlistProduct.total_price = (product.price * quantity)
+            wishlistProduct.save()
+
+        elif quantity == 0:
+            wishlistProduct.delete()
+            
+        return HttpResponseRedirect(reverse('add-to-cart'))
+
+
+
 
 
 # user all orders

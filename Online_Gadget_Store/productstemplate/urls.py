@@ -9,5 +9,5 @@ urlpatterns = [
     path('<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
     path('add-cart/', views.AddToCart.as_view(), name='add-to-cart'),
     path('user-orders/', views.UserOrderView.as_view(), name='user-order-list'),
-    path('delete-wishlist/<int:pk>/', views.DeleteWishList.as_view(), name='delete-wishlist-product'),
+    path('add-or-delete-wishlist/<int:pk>/', views.AddOrDeleteWishList.as_view(), name='add-or-delete-wishlist-product'),
 ]
