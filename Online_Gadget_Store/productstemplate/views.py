@@ -24,6 +24,14 @@ class HomeView(TemplateView):
         return context
 
 
+class ProductList(ListView):
+    template_name = "productstemplate/products.html"
+
+    model = Product
+    context_object_name = 'products'
+    ordering = ['-datatime']
+
+
 # Category Products
 class SpecificCategoryAllProducts(ListView):
     template_name = "productstemplate/specificeproducts.html"
