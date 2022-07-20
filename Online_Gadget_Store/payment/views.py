@@ -197,7 +197,7 @@ def my_webhook_view(request):
         
         user = User.objects.get(email=email)
         wishlist = WishList.objects.filter(user=user)
-        datetime = datetime.datetime.now()
+        date = datetime.datetime.now()
 
         summary = ''
         for product in wishlist:
@@ -210,7 +210,7 @@ def my_webhook_view(request):
         summary += f"Shipping                                          {shiping_cost}\n"
         summary += f"Amount charged                                    {total_price}\n"
         summary += "---------------------------------------------------------\n"
-        summary += "Email: {email}, Phone: {phone},\nOrder Time {datetime}\n"
+        summary += f"Email: {email}, Phone: {phone},\nOrder Time {date}\n"
 
 
         userOrder.is_last = True

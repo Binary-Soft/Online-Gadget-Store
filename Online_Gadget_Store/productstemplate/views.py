@@ -32,14 +32,17 @@ class ProductList(ListView):
     context_object_name = 'products'
     ordering = ['-datatime']
 
-
+# for user search
 class SearchView(TemplateView):
     template_name = "productstemplate/products.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_search = self.request.GET['product']
-        context['products'] = Product.objects.filter(product_name__icontains=user_search).order_by('-datatime')
+        products = Product.objects.all()
+        context['products'] = products.filter(product_name__icontains=user_search).order_by('-datatime')
+        if len(context['products']) == 0:
+            context['products'] = products.filter(category__icontains=user_search).order_by('-datatime')
         return context
 
 
@@ -47,8 +50,8 @@ class SearchView(TemplateView):
 # Category Products
 class SpecificCategoryAllProducts(ListView):
     template_name = "productstemplate/specificeproducts.html"
-    paginate_by = 20
-    paginate_orphans = 1
+    paginate_by = 10
+    paginate_orphans = 3
     
     context_object_name = 'products'
 

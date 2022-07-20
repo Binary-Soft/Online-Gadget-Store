@@ -5,8 +5,11 @@
 
 {% block content %}
 
-
-{% include 'productstemplate\productlist.html' %}
+{% if products %}
+    {% include 'productstemplate\productlist.html' %}
+{% else %}
+    <p class="h1">The Product You Searched was not Found. Please search again with Proper Product Name. </p>
+{% endif %}
 
 
 {% endblock %}
