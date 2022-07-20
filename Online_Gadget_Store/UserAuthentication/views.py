@@ -76,7 +76,6 @@ class UpdateUserProfile(LoginRequiredMixin, View):
     
     def post(self, *args, **kwargs):
         image = self.request.FILES.get('profileimage')
-        print(image)
         extenduser = ExtendUser.objects.get(user=self.request.user)
         
         if image is not None:
