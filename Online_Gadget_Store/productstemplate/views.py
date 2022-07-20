@@ -25,13 +25,21 @@ class HomeView(TemplateView):
         return context
 
 
+class ProductList(ListView):
+    template_name = "productstemplate/products.html"
+
+    model = Product
+    context_object_name = 'products'
+    ordering = ['-datatime']
+
+
 class SearchView(TemplateView):
     template_name = "productstemplate/home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.filter(product__contains='oneplus').order_by('-datatime')
-        print(context['products'])
+        # context['products'] = Product.objects.filter(product__contains='oneplus').order_by('-datatime')
+        # print(context['products'])
         return context
 
 
