@@ -91,7 +91,6 @@ class AddToCart(LoginRequiredMixin, View):
         wishlist.save()
         return HttpResponseRedirect(reverse('add-to-cart'))
 
-    
 
     def get(self, *args, **kwargs):
         
