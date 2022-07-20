@@ -34,14 +34,12 @@ class ProductList(ListView):
 
 
 class SearchView(TemplateView):
-    template_name = "productstemplate/home.html"
+    template_name = "productstemplate/products.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.filter(product_name__icontains='onePlus').order_by('-datatime')
-        print(context['products'])
-        context['products'] = Product.objects.Search(product_name='onePlus').order_by('-datatime')
-        print(context['products'])
+        user_search = self.request.GET['product']
+        context['products'] = Product.objects.filter(product_name__icontains=user_search).order_by('-datatime')
         return context
 
 

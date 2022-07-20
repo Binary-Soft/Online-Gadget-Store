@@ -18,7 +18,11 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['category', 'brand_name', ]
 
 
-admin.site.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['user', 'product', 'quantity', 'datatime']
+    list_filter = ['user', 'datatime']
+
+admin.site.register(Order, OrderAdmin)
 
 
 @admin.register(WishList)
