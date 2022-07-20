@@ -6,14 +6,6 @@
 {% block content %}
 
 
-{% if request.user.is_authenticated %}
-<h1> Hello {{ request.user.first_name | title }} </h1>
-{{ request.user }}
-{% endif %}
-<a href="{% url 'user-profile' %}"> Profile </a>
-
-
-
 <div class="container pt-2">
   <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">

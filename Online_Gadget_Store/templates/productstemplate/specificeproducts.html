@@ -11,7 +11,9 @@
 
 {% include 'productstemplate\productlist.html' with products=products %}
 
-
+<div class="fixed-bottom">
+    <!-- footer fixed-bottom -->
+    
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
@@ -29,5 +31,5 @@
         {% endif %}
     </span>
 </div>
-
+</div>
 {% endblock %}

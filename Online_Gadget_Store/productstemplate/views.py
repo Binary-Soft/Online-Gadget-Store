@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db.models import Sum
 
 
 from . models import Category, Product, WishList, Order
@@ -22,6 +23,17 @@ class HomeView(TemplateView):
         context['categories'] = Category.objects.all().order_by('category_name')
         context['products'] = Product.objects.all().order_by('-datatime')[:9]
         return context
+
+
+class SearchView(TemplateView):
+    template_name = "productstemplate/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products'] = Product.objects.filter(product__contains='oneplus').order_by('-datatime')
+        print(context['products'])
+        return context
+
 
 
 # Category Products
@@ -74,11 +86,10 @@ class AddToCart(LoginRequiredMixin, View):
         
         user = User.objects.get(email=self.request.user)
         wishlist = WishList.objects.filter(user=user).order_by('-datatime')
-        total_price = 0
-        for product in wishlist:
-            total_price += product.total_price
-        userwishlist = {'wishlist': wishlist, 'totalprice': total_price,}
-        return render(self.request, self.template_name, userwishlist)
+        total_price = wishlist.aggregate(Sum('total_price'))
+        context = {'wishlist': wishlist, 
+        'total_price': total_price.get('total_price__sum') if total_price.get('total_price__sum') is not None else 0}
+        return render(self.request, self.template_name, context)
 
 
 # delete user wishlist
@@ -102,10 +113,8 @@ class AddOrDeleteWishList(LoginRequiredMixin, View):
         product = wishlistProduct.product
 
         if quantity != 0:
-            if wishlistProduct.quantity < quantity:
-                wishlistProduct.quantity += 1
-            else:
-                wishlistProduct.quantity -= 1
+            
+            wishlistProduct.quantity = quantity
             wishlistProduct.total_price = (product.price * quantity)
             wishlistProduct.save()
 
