@@ -157,10 +157,10 @@ MEDIA_ROOT = 'medias'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # for SMTP Sever   # EMAIL_HOST_PASSWORD is requird
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # for SMTP Sever   # EMAIL_HOST_PASSWORD is requird
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'sunnyvai110@gmail.com'
 EMAIL_HOST_PASSWORD = 'tkltktqwtqvmgsqf'

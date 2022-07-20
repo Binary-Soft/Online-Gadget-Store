@@ -9,6 +9,7 @@ from django.conf import settings
 
 from productstemplate.models import WishList, Order, Product
 
+import datetime
 import stripe
 import json
 
@@ -175,13 +176,14 @@ def my_webhook_view(request):
         shipping = session['customer_details']
         address = shipping['address']
         shping_address = f"{address['country']}, {address['city']}, {address['line1']}, {address['line2']}, Postal Code: {address['postal_code']}"
-        print(shping_address)
 
         # customer_details
         name = shipping['name']
         email = shipping['email']
         phone = shipping['phone']
-        print(name, email, phone)
+        # print(name, email, phone)
+
+
 
 
         # metadata = session['metadata']  # wishList product id
@@ -189,24 +191,33 @@ def my_webhook_view(request):
         # price
         subt = session['amount_subtotal']/100
         total_price = session['amount_total']/100
+        shiping_cost = total_price - subt
 
-
-        # print('subt: ', subt)
-        # print('total: ', total_price)
 
         
         user = User.objects.get(email=email)
         wishlist = WishList.objects.filter(user=user)
+        datetime = datetime.datetime.now()
+
+        summary = ''
         for product in wishlist:
+            summary += f"{product.product}  x  {product.quantity}                    Tk {product.total_price}\n"
             userOrder = Order.objects.create(user=user, product=product.product,
             quantity=product.quantity, sub_total_price=product.total_price, total_price=total_price,
             shipping_address=shping_address, phone=phone)
+        summary += "---------------------------------------------------------\n"
+        summary += f"Subtotal                                          {subt}\n"
+        summary += f"Shipping                                          {shiping_cost}\n"
+        summary += f"Amount charged                                    {total_price}\n"
+        summary += "---------------------------------------------------------\n"
+        summary += "Email: {email}, Phone: {phone},\nOrder Time {datetime}\n"
+
+
         userOrder.is_last = True
         userOrder.save()
         wishlist.delete()
-
-        send_mail('Your Online_Gadget_Store receipt', f'Payment Successfull.\nTotal = {total_price}\n', settings.EMAIL_HOST_USER, [email])
-        print("ok - pay succ")
+        fullmsg = f'Payment Successfull.\nShping Address {shping_address}\n{summary}\n'
+        send_mail('Your Online Gadget Store receipt', fullmsg, settings.EMAIL_HOST_USER, [email])
         # Passed signature verification
     return HttpResponse(status=200)
 
