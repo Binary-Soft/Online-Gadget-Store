@@ -6,7 +6,7 @@ import datetime
 # Create your models here.
 
 class Notice(models.Model):
-    announcement = models.TextField(max_length=120)
+    announcement = models.TextField(max_length=255)
 
     def __str__(self):
         return self.announcement[:20] + '...'
