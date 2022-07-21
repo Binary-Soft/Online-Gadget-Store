@@ -35,15 +35,22 @@ class ProductList(ListView):
 # for user search
 class SearchView(TemplateView):
     template_name = "productstemplate/products.html"
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_search = self.request.GET['product']
-        products = Product.objects.all()
-        context['products'] = products.filter(product_name__icontains=user_search).order_by('-datatime')
-        if len(context['products']) == 0:
-            context['products'] = products.filter(category__icontains=user_search).order_by('-datatime')
+        if len(user_search) >= 80 or user_search is None:
+            search_result = Product.objects.none()
+        else:
+            products = Product.objects.all()
+            search_result_name = products.filter(product_name__icontains=user_search)
+            search_result_category = products.filter(category__category_name__icontains=user_search)
+            search_result = search_result_name.union(search_result_category)
+        if len(search_result) == 0:
+            context['massage'] = user_search[:30] + '...'
+        context['products'] = search_result
         return context
+        
 
 
 

@@ -8,7 +8,18 @@
 {% if products %}
     {% include 'productstemplate\productlist.html' %}
 {% else %}
-    <p class="h1">The Product You Searched was not Found. Please search again with Proper Product Name. </p>
+    About 0 results <br><br>
+
+    <div class="h4">Your search - <strong>{{massage}}</strong> - did not match any documents.</div><br>
+
+    <div class="h4">Suggestions:
+        <ul>
+            <li>• Make sure that all words are spelled correctly.</li>
+            <li>• Try different keywords.</li>
+            <li>• Try more general keywords.</li>
+            <li>• Try fewer keywords.</li>
+        </ul></div>
+
 {% endif %}
 
 
