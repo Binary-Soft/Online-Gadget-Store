@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import (HeadLineMessage, Category, Brand, Product, Order, WishList)
+from .models import (Notice, HeadLineMessage, Category, Brand, Product, Order, WishList)
 
 # UnRegister bulitin models here.
 
@@ -10,7 +10,7 @@ admin.site.unregister(Group)
 
 # Register your models here.
 
-
+admin.site.register(Notice)
 admin.site.register(HeadLineMessage)
 
 

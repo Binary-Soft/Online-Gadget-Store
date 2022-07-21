@@ -22,10 +22,7 @@
         <img src="{{ HeadLineMessage.logo.url }}"
           class="d-block w-100" alt="..." style="height: 350px" />
       </div>
-      {% else %}
-        <div class="h3">{{HeadLineMessage.name}}</div>
       {% endif %}
-
       {% endfor %}
       
     </div>
@@ -38,8 +35,8 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
+  <marquee behavior="scroll" direction="left"> {{notice.announcement|title}} </marquee>
 </div>
-
 
 
 {% include 'productstemplate\categorys.html' %}

@@ -5,6 +5,13 @@ import datetime
 
 # Create your models here.
 
+class Notice(models.Model):
+    announcement = models.TextField(max_length=120)
+
+    def __str__(self):
+        return self.announcement[:20] + '...'
+
+
 class HeadLineMessage(models.Model):
     name = models.CharField(max_length=255, default='', blank=True, help_text='Imagen name or any Messages')
     logo = models.ImageField('Picture', upload_to='HeadLine', help_text='Upload the Home pages Cover image or Any Message')
