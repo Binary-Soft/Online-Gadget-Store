@@ -1,11 +1,12 @@
-from django.shortcuts import redirect, HttpResponse
+from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
-from django.conf import settings
+from django.contrib import messages
 
 from productstemplate.models import WishList, Order, Product
 
@@ -109,8 +110,12 @@ class CreateCheckoutSession(View):
 
 
 
-class SuccessView(TemplateView):
-    template_name = 'payment/success.html'
+class SuccessView(View):
+
+    def get(self, request, *args, **kwargs):
+        url = reverse('home')
+        messages.success(request, 'Payment Successfull.')
+        return HttpResponseRedirect(url)
 
 
 class CancleView(TemplateView):
@@ -119,7 +124,6 @@ class CancleView(TemplateView):
 
 
 endpoint_secret = settings.WEB_HOOK_SECRETE_KEY
-
 
 @csrf_exempt
 def my_webhook_view(request):
@@ -147,25 +151,6 @@ def my_webhook_view(request):
         payment_intent = event.data.object # contains a stripe.PaymentIntent
         # print(payment_intent)
 
-        '''
-        print('\n\n')
-        details = payment_intent['charges']['data'][0]['billing_details']
-        print(details)
-        address = details['address']
-        shping_address = f"{address['country']}, {address['city']}, {address['line1']}, {address['postal_code']}"
-        print("shping_address: " + shping_address)
-        email = details['email']
-        name = details['name']
-        phone = details['phone']
-        print("email: " + email)
-        print("name: " + name)
-        print("phone: " + str(phone))
-        print('total Am: ', payment_intent['amount_received']/100)
-        # for product in wishlist:
-            # Order.objects.create(user=request.user, product=product.product,
-            # shipping_address=shping_address, quantity=product.quantity, total_price=payment_intent['amount_total'],
-            # )
-        '''
         
 
     elif event['type'] == 'checkout.session.completed':
