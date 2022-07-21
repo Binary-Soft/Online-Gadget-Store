@@ -1,8 +1,15 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
 from .models import (Category, Brand, Product, Order, WishList)
 
+# UnRegister bulitin models here.
+
+admin.site.unregister(Group)
+
 # Register your models here.
+
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

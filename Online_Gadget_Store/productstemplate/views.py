@@ -32,6 +32,7 @@ class ProductList(ListView):
     context_object_name = 'products'
     ordering = ['-datatime']
 
+
 # for user search
 class SearchView(TemplateView):
     template_name = "productstemplate/products.html"
@@ -51,8 +52,6 @@ class SearchView(TemplateView):
         context['products'] = search_result
         return context
         
-
-
 
 # Category Products
 class SpecificCategoryAllProducts(ListView):
@@ -120,6 +119,7 @@ class AddOrDeleteWishList(LoginRequiredMixin, View):
         wishlist = WishList.objects.get(user=user, pk=id)
         wishlist.delete()
         return HttpResponseRedirect(reverse('add-to-cart'))
+    
     
     # add or remove a single product from user wishlist
     def post(self, *args, **kwargs):
