@@ -27,8 +27,10 @@
                         <img src="{{ request.user.extenduser.picture.url }}" alt="avatar"
                             class="rounded-circle img-fluid" style="width: 150px" />
                         <h5 class="my-3"> {{ request.user.first_name|title }} </h5>
-
-                        <!-- <button type="button" class="btn btn-outline-primary ms-1 mb-2">Order History</button><br> -->
+                        <a href="{% url 'update-user-profile' %}" style="text-decoration:none">
+                            <button type="button" class="btn btn-outline-primary ms-1 mb-2">Update Profile</button>
+                        </a>
+                        <br>
 
                             <div class="d-flex justify-content-center mb-2">
                             </div>
@@ -165,7 +167,7 @@
 </section>
 
 
-<a href="{% url 'update-user-profile' %}" style="text-decoration:none"> Update Profile </a> <br>
+
 
 
 

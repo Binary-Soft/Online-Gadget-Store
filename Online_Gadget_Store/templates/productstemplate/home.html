@@ -16,20 +16,18 @@
 <div class="container pt-2">
   <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
+      {% for HeadLineMessage in HeadLineMessages %}
+        {% if HeadLineMessage.logo %}
       <div class="carousel-item active" data-bs-interval="10000">
-        <img src="https://www.startech.com.bd/image/cache/catalog/home/banner/gadget-fest-coming-soon-982x500.jpg"
+        <img src="{{ HeadLineMessage.logo.url }}"
           class="d-block w-100" alt="..." style="height: 350px" />
       </div>
-      <div class="carousel-item" data-bs-interval="2000">
-        <img
-          src="https://www.startech.com.bd/image/cache/catalog/home/banner/gaming-chair-fest-home-banner2-982x500.jpg"
-          class="d-block w-100" alt="..." style="height: 350px" />
-      </div>
-      <div class="carousel-item">
-        <img
-          src="https://www.startech.com.bd/image/cache/catalog/home/banner/64-free-delivery-5-brand-home-banner-982x500.jpg"
-          class="d-block w-100" alt="..." style="height: 350px" />
-      </div>
+      {% else %}
+        <div class="h3">{{HeadLineMessage.name}}</div>
+      {% endif %}
+
+      {% endfor %}
+      
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>

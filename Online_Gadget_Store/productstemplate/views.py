@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.db.models import Sum
 
 
-from . models import Category, Product, WishList, Order
+from . models import HeadLineMessage, Category, Product, WishList, Order
 
 # Create your views here.
 
@@ -22,6 +22,8 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all().order_by('category_name')
         context['products'] = Product.objects.all().order_by('-datatime')[:9]
+        headlines = HeadLineMessage.objects.all()
+        context['HeadLineMessages'] = headlines[len(headlines)-3:]
         return context
 
 

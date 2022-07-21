@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} User Order {% endblock %}
+{% block title %} {{ request.user.first_name|title }} Order's {% endblock %}
 
 
 

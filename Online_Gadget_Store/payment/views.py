@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from productstemplate.models import WishList, Order, Product
 
@@ -19,7 +20,12 @@ import json
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-class CreateCheckoutSession(View):
+class CreateCheckoutSession(LoginRequiredMixin, View):
+    login_url = "/user/login/"
+
+    def get(self, request, *args, **kwargs):
+        url = reverse('home')
+        return HttpResponseRedirect(url)
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.user)
