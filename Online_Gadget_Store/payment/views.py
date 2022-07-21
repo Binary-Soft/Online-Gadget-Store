@@ -29,7 +29,25 @@ class CreateCheckoutSession(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.user)
-        products = WishList.objects.filter(user=user).order_by('-datatime')
+        products = WishList.objects.filter(user=user).order_by('-datatime') # user cart list product
+        msg = ""
+        check = False
+        for product in products:
+            stockQuantity = product.product.quantity
+            if product.quantity > stockQuantity and stockQuantity != 0:
+                msg += f"We don't have enough quantity of {product.product.product_name} in Stock. Product quantity available in stock {stockQuantity}. ||| "
+                check = True
+                
+            elif int(stockQuantity) == 0:
+                msg += f"{product.product.product_name} is not available in stock. ||| "
+                check = True
+
+        if check == True:
+            messages.error(request, msg)
+            url = reverse('add-to-cart')
+            return HttpResponseRedirect(url)
+
+
         line_items = []
         metadata = {}
         for product in products:
@@ -190,10 +208,17 @@ def my_webhook_view(request):
         wishlist = WishList.objects.filter(user=user)
         date = datetime.datetime.now()
 
+
         summary = ''
         for product in wishlist:
+            originalProduct = product.product  # main product
+            #decreese the main product quantity 
+            originalProduct.quantity = originalProduct.quantity - product.quantity
+            if originalProduct.quantity == 0:
+                originalProduct.inStock = False  # stack status change
+            originalProduct.save() # update the main product quantity
             summary += f"{product.product}  x  {product.quantity}                    Tk {product.total_price}\n"
-            userOrder = Order.objects.create(user=user, product=product.product,
+            userOrder = Order.objects.create(user=user, product=originalProduct,
             quantity=product.quantity, sub_total_price=product.total_price, total_price=total_price,
             shipping_address=shping_address, phone=phone)
         summary += "---------------------------------------------------------\n"

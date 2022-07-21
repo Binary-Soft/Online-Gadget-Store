@@ -35,6 +35,8 @@ class Product(models.Model):
     brand_name = models.ForeignKey(Brand, on_delete=models.CASCADE, default="", blank=True, related_name="Products")
     specification = models.CharField(max_length=400, blank=True, default="")
     price = models.FloatField(blank=False, default=0.00, validators=[MinValueValidator(0.0)], help_text='Price Can not be Less than Zero.')
+    quantity = models.PositiveBigIntegerField(default=0)
+    inStock = models.BooleanField(default=True)
     datatime = models.DateTimeField(auto_now_add=True)
     warranty = models.CharField(max_length=50, blank=True)
     image1 = models.ImageField(upload_to='Product Images')

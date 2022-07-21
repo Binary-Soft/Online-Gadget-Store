@@ -24,7 +24,7 @@ admin.site.register(Brand)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['category', 'brand_name', 'product_name']
+    list_display = ['category', 'brand_name', 'product_name', 'quantity']
     list_filter = ['category', 'brand_name', ]
 
 

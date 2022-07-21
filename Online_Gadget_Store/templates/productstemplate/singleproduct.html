@@ -8,7 +8,6 @@
 
 
 {% block content %}
-
 <!-- SingleProduct page start  -->
 <div class="container mt-5">
     <div class="row text-center">
@@ -95,7 +94,7 @@
           <tbody>
             <tr>
               <td>Price:</td>
-              <td>Tk{{ object.price }}</td>
+              <td>Tk {{ object.price }}</td>
             </tr>
             <tr>
               <td>Model:</td>
@@ -109,13 +108,26 @@
               <td>Description:</td>
               <td>{{ object.specification }}</td>
             </tr>
+            <tr>
+              {% if object.inStock %}
+                <td>Status</td>
+                <td><b>In Stock.</b></td>
+              {% else %}
+              <td>Status</td>
+              <td style="color:red;"><b>Stock Out.</b></td>
+              {% endif %}
+            </tr>
           </tbody>
         </table>
-        <form method="POST" action="{% url 'add-to-cart' %}">
-            {% csrf_token %}
-            <input class="input" type="hidden" name="productID" value="{{object.pk}}"/><br/>
-            <button class="btn btn-primary mt-2">Add To Cart</button>
-        </form>
+        {% if object.inStock %}
+          <form method="POST" action="{% url 'add-to-cart' %}">
+              {% csrf_token %}
+              <input class="input" type="hidden" name="productID" value="{{object.pk}}"/><br/>
+              <button class="btn btn-primary mt-2">Add To Cart</button>
+          </form>
+        {% else %}
+        <button class="btn btn-primary mt-2">Add To Cart</button>
+        {% endif %}
       </div>
     </div>
   </div>
