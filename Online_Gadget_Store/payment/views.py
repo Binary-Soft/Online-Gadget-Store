@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
 
 from productstemplate.models import WishList, Order, Product
 
@@ -30,6 +31,13 @@ class CreateCheckoutSession(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.user)
         products = WishList.objects.filter(user=user).order_by('-datatime') # user cart list product
+        price = products.aggregate(Sum('total_price'))
+        total_price = price.get('total_price__sum') + 50
+
+        if total_price >= 1000000:
+            messages.error(request, "Total Price can't be more than 10,00,000.")
+            url = reverse('add-to-cart')
+            return HttpResponseRedirect(url)
         msg = ""
         check = False
         for product in products:
