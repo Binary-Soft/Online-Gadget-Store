@@ -1,4 +1,5 @@
 
+  
   <div class="container mt-5">
     <div class="container d-flex">
       <div class="row justify-content-center">
@@ -11,7 +12,7 @@
               src="{{ product.image1.url }}"
               class="card-img-top  animate__animated animate__pulse"
               alt="{{ product.image1 }}"
-              width="100px" height="250px"
+              width="80px" height="230px"
             />
             </a>
             <div class="card-body">
@@ -21,13 +22,17 @@
                 </a>
             </h5>
               <p class="card-text text-center">Tk {{ product.price }}</p>
-              <form method="POST" action="{% url 'add-to-cart' %}">
-                {% csrf_token %}
-                <input class="input" type="hidden" name="productID" value="{{product.pk}}"/><br/>
-                <button type="submit" style="border: none; background: none">
-                  <i class="fas fa-cart-arrow-down animate__animated animate__flip"></i>
-                </button>
-            </form>
+              {% if product.inStock %}
+                <form method="POST" action="{% url 'add-to-cart' %}">
+                  {% csrf_token %}
+                  <input class="input" type="hidden" name="productID" value="{{product.pk}}"/><br/>
+                  <button type="submit" style="border: none; background: none">
+                    <i class="fas fa-cart-arrow-down animate__animated animate__flip"></i>
+                  </button>
+                </form>
+              {% else %}
+              <i class="fas fa-cart-arrow-down animate__animated animate__flip"> Stock Out. </i>
+              {% endif %}
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.db.models import Sum
 
 
-from . models import Notice, HeadLineMessage, Category, Product, WishList, Order
+from . models import Notice, Brand, HeadLineMessage, Category, Product, WishList, Order
 
 # Create your views here.
 
@@ -28,12 +28,16 @@ class HomeView(TemplateView):
         return context
 
 
+# all products
 class ProductList(ListView):
     template_name = "productstemplate/products.html"
 
     model = Product
     context_object_name = 'products'
     ordering = ['-datatime']
+
+    paginate_by = 9
+    paginate_orphans = 2
 
 
 # for user search
@@ -59,7 +63,7 @@ class SearchView(TemplateView):
 # Category Products
 class SpecificCategoryAllProducts(ListView):
     template_name = "productstemplate/specificeproducts.html"
-    paginate_by = 10
+    paginate_by = 6
     paginate_orphans = 3
     
     context_object_name = 'products'
@@ -71,8 +75,21 @@ class SpecificCategoryAllProducts(ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['category'] = get_object_or_404(Category, slug=self.kwargs.get('slug'))  
+        context['category'] = get_object_or_404(Category, slug=self.kwargs.get('slug'))
+        context['brands'] = Brand.objects.filter(Products__category=context['category']).distinct()
         return context
+
+
+# filter by category and brand name
+class CategoryBrand(SpecificCategoryAllProducts):
+    
+    def get_queryset(self, *args, **kwargs):
+        print(self.kwargs)
+        category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
+        brand = get_object_or_404(Brand, brand_name=self.kwargs.get('brand'))
+        products = Product.objects.filter(category=category, brand_name=brand).all().order_by('-datatime')
+        return products
+
 
 
 # for single product details
@@ -132,13 +149,13 @@ class AddOrDeleteWishList(LoginRequiredMixin, View):
         wishlistProduct = get_object_or_404(WishList, user=user, pk=id)
         product = wishlistProduct.product
 
-        if quantity != 0:
+        if quantity != 0 and product.inStock == True:
             
             wishlistProduct.quantity = quantity
             wishlistProduct.total_price = (product.price * quantity)
             wishlistProduct.save()
 
-        elif quantity == 0:
+        elif quantity == 0 or product.inStock == False:
             wishlistProduct.delete()
             
         return HttpResponseRedirect(reverse('add-to-cart'))

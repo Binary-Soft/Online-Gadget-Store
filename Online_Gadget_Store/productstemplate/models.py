@@ -40,7 +40,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=50, blank=False, help_text='Add Product Model Name or Product Name.')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, related_name="Products")
     brand_name = models.ForeignKey(Brand, on_delete=models.CASCADE, default="", blank=True, related_name="Products")
-    specification = models.CharField(max_length=400, blank=True, default="")
+    specification = models.TextField(blank=True, default="")
     price = models.FloatField(blank=False, default=0.00, validators=[MinValueValidator(0.0)], help_text='Price Can not be Less than Zero.')
     quantity = models.PositiveBigIntegerField(default=0)
     inStock = models.BooleanField(default=True)
