@@ -6,6 +6,30 @@
 {% block content %}
 
 {% if products %}
+    <div class="container">
+        <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex"><b>Category</b></a>
+            <div class="dropdown">
+            <button
+                class="btn btn-secondary dropdown-toggle"
+                type="submit"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-haspopup="true"
+            >
+                Sort By
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for category in categorys %}
+                <li><a class="dropdown-item" href="{% url 'category-name' category.slug %}">{{category.category_name|title }}</a></li> 
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+        </nav>
+    </div>
+
     {% include 'productstemplate\productlist.html' %}
     {% include 'productstemplate/paginagtion.html' %}
 {% else %}

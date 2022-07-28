@@ -40,6 +40,7 @@
             ></button>
           </div>
           <div class="carousel-inner">
+            {% if object.image1 %}
             <div class="carousel-item active">
               <img
                 src="{{ object.image1.url }}"
@@ -47,6 +48,8 @@
                 alt="{{ object.image1 }}"
               />
             </div>
+            {% endif %}
+            {% if object.image2 %}
             <div class="carousel-item">
               <img
                 src="{{ object.image2.url }}"
@@ -54,6 +57,8 @@
                 alt="{{ object.image2 }}"
               />
             </div>
+            {% endif %}
+            {% if object.image3 %}
             <div class="carousel-item">
               <img
                 src="{{ object.image3.url }}"
@@ -61,6 +66,7 @@
                 alt="{{ object.image3 }}"
               />
             </div>
+            {% endif %}
           </div>
           <button
             class="carousel-control-prev"

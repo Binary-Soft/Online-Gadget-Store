@@ -39,6 +39,13 @@ class ProductList(ListView):
     paginate_by = 9
     paginate_orphans = 2
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorys'] = Category.objects.all().order_by('-id')
+        print(context['categorys'])
+        # context['brands'] = Brand.objects.filter(Products__category=context['category']).distinct()
+        return context
+
 
 # for user search
 class SearchView(TemplateView):
@@ -84,7 +91,6 @@ class SpecificCategoryAllProducts(ListView):
 class CategoryBrand(SpecificCategoryAllProducts):
     
     def get_queryset(self, *args, **kwargs):
-        print(self.kwargs)
         category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         brand = get_object_or_404(Brand, brand_name=self.kwargs.get('brand'))
         products = Product.objects.filter(category=category, brand_name=brand).all().order_by('-datatime')
