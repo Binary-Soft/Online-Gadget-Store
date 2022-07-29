@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db.models import Sum
-
+from django.db.models import Q
 
 from . models import Notice, Brand, HeadLineMessage, Category, Product, WishList, Order
 
@@ -57,13 +57,14 @@ class SearchView(TemplateView):
         if len(user_search) >= 80 or user_search is None:
             search_result = Product.objects.none()
         else:
-            products = Product.objects.all()
-            search_result_name = products.filter(product_name__icontains=user_search)
-            search_result_category = products.filter(category__category_name__icontains=user_search)
-            search_result = search_result_name.union(search_result_category)
+            search_result = Product.objects.filter(Q(product_name__icontains=user_search) |
+             Q(category__category_name__icontains=user_search))
+
         if len(search_result) == 0:
             context['massage'] = user_search[:30] + '...'
         context['products'] = search_result
+        # context['categorys'] = search_result.filter.values_list('category__category_name', flat=True).distinct()
+        # print(context['categorys'])
         return context
         
 
@@ -189,5 +190,5 @@ admin
 123
 
 bdskynet75@gmail.com
-Tintinbd12
+Tintinbd123
 '''
