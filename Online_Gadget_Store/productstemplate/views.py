@@ -47,7 +47,7 @@ class ProductList(ListView):
         return context
 
 
-# for user search
+# for search product
 class SearchView(TemplateView):
     template_name = "productstemplate/products.html"
     
@@ -63,8 +63,8 @@ class SearchView(TemplateView):
         if len(search_result) == 0:
             context['massage'] = user_search[:30] + '...'
         context['products'] = search_result
-        # context['categorys'] = search_result.filter.values_list('category__category_name', flat=True).distinct()
-        # print(context['categorys'])
+        categories = [product.category for product in search_result]
+        context['categorys'] = list(set(categories))
         return context
         
 
