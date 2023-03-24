@@ -1,6 +1,6 @@
 # Online-Gadget-Store
 
-## UI
+## Some UI
 
 ## Home
 
@@ -10,10 +10,6 @@
 ## Category
 
 ![Category](https://user-images.githubusercontent.com/71305747/227588901-b20e72a7-d946-4ecf-86e2-1aa9da7bd292.png)
-
-## Category
-
-![Category](https://user-images.githubusercontent.com/71305747/227588918-48354c37-8da1-4bd7-96f5-263aa6cbdc31.png)
 
 ## All Product
 
